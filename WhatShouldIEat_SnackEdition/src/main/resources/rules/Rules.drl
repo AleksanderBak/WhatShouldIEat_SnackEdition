@@ -1,0 +1,831 @@
+package com.sample
+
+import org.kie.api.runtime.KieRuntime;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import javax.swing.JFrame;
+        
+global JFrame frame 
+global javax.swing.JTextArea textArea 
+ 
+declare Answer
+	answer: String
+end
+
+declare Question
+	question: String
+end
+
+declare Options
+	options: Object[] 
+end
+
+rule "init"
+when
+then
+	insert(new Question("Are you from Japan?"));
+	insert(new Answer());
+	insert(new Options(new Object[]{"Yes","No"}));
+end
+
+rule "QuestionChanged"
+when
+	question: Question()
+	answer: Answer()
+	options: Options()
+then                 
+    int n = JOptionPane.showOptionDialog(frame, question.getQuestion(), null, JOptionPane.YES_NO_OPTION,
+                                             JOptionPane.QUESTION_MESSAGE,
+                                             null,
+                                             options.getOptions(),
+                                             null);
+    String answerString = "";
+    if (n == 1) { answerString = "No"; }
+    if (n == 0) { answerString = "Yes"; }
+    //(n == 0) ? "Yes": "No";
+    modify(answer){setAnswer(answerString)};
+end
+
+rule "Are you from Japan - Yes"
+when
+	a:Answer(answer == "Yes")
+	q:Question(question == "Are you from Japan?")
+	o:Options()
+then
+	q.setQuestion("You should eat one: 1. MicroMagic");
+	a.setAnswer("");
+	update(q);
+	update(a);
+	modify(o){setOptions(new Object[]{"Koniec"})};
+	update(o);
+end
+
+rule "Are you from Japan - No"
+when
+	a:Answer(answer == "No")
+	q:Question(question == "Are you from Japan?")
+	o:Options()
+then
+	q.setQuestion("Are you on unemployment?");
+	a.setAnswer("");
+	update(q);
+	update(a);
+	update(o);
+end
+
+rule "Are you on unemployment - Yes"
+when
+	a:Answer(answer == "Yes")
+	q:Question(question == "Are you on unemployment?")
+	o:Options()
+then
+	q.setQuestion("You should eat one: 1. GreatValue 2. CountryRich 3. Tinas Burrito");
+	a.setAnswer("");
+	update(q);
+	update(a);
+	modify(o){setOptions(new Object[]{"Koniec"})};
+update(o);
+end
+
+rule "Are you on unemployment - No"
+when
+	a:Answer(answer == "No")
+	q:Question(question == "Are you on unemployment?")
+	o:Options()
+then
+	q.setQuestion("Are you in Alaska?");
+	a.setAnswer("");
+	update(q);
+	update(a);
+	update(o);
+end
+
+rule "Are you in Alaska - Yes"
+when
+	a:Answer(answer == "Yes")
+	q:Question(question == "Are you in Alaska?")
+	o:Options()
+then
+	q.setQuestion("You should eat one: 1. Fresh fish");
+	a.setAnswer("");
+	update(q);
+	update(a);
+	modify(o){setOptions(new Object[]{"Koniec"})};
+update(o);
+end
+
+rule "Are you in Alaska - No"
+when
+	a:Answer(answer == "No")
+	q:Question(question == "Are you in Alaska?")
+	o:Options()
+then
+	q.setQuestion("Are you on diet?");
+	a.setAnswer("");
+	update(q);
+	update(a);
+	update(o);
+end
+
+rule "Are you on diet - Yes"
+when
+	a:Answer(answer == "Yes")
+	q:Question(question == "Are you on diet?")
+	o:Options()
+then
+	q.setQuestion("You should eat one: 1. SmartOnes 2. Slim a Bear 3. LeanCuisine 4. SmartOnes 5. WeightWatchers");
+	a.setAnswer("");
+	update(q);
+	update(a);
+	modify(o){setOptions(new Object[]{"Koniec"})};
+update(o);
+end
+
+rule "Are you on diet - No"
+when
+	a:Answer(answer == "No")
+	q:Question(question == "Are you on diet?")
+	o:Options()
+then
+	q.setQuestion("Are you a vegetarian?");
+	a.setAnswer("");
+	update(q);
+	update(a);
+	update(o);
+end
+
+rule "Are you a vegetarian - Yes"
+when
+	a:Answer(answer == "Yes")
+	q:Question(question == "Are you a vegetarian?")
+	o:Options()
+then
+	q.setQuestion("Are you a vegan?");
+	a.setAnswer("");
+	update(q);
+	update(a);
+	update(o);
+end
+
+rule "Are you a vegetarian - No"
+when
+	a:Answer(answer == "No")
+	q:Question(question == "Are you a vegetarian?")
+	o:Options()
+then
+	q.setQuestion("Do you want pizza?");
+	a.setAnswer("");
+	update(q);
+	update(a);
+	update(o);
+end
+
+rule "Are you a vegan - Yes"
+when
+	a:Answer(answer == "Yes")
+	q:Question(question == "Are you a vegan?")
+	o:Options()
+then
+	q.setQuestion("You should eat one: 1. Tofurky 2. Boca burgers");
+	a.setAnswer("");
+	update(q);
+	update(a);
+	modify(o){setOptions(new Object[]{"Koniec"})};
+update(o);
+end
+
+rule "Are you a vegan - No"
+when
+	a:Answer(answer == "No")
+	q:Question(question == "Are you a vegan?")
+	o:Options()
+then
+	q.setQuestion("You should eat one: 1. Enchilada 2. Cheese and green chile tamales");
+	a.setAnswer("");
+	update(q);
+	update(a);
+	modify(o){setOptions(new Object[]{"Koniec"})};
+update(o);
+end
+
+rule "Do you want pizza - Yes"
+when
+	a:Answer(answer == "Yes")
+	q:Question(question == "Do you want pizza?")
+	o:Options()
+then
+	q.setQuestion("Are you still living with your parents?");
+	a.setAnswer("");
+	update(q);
+	update(a);
+	update(o);
+end
+
+rule "Do you want pizza - No"
+when
+	a:Answer(answer == "No")
+	q:Question(question == "Do you want pizza?")
+	o:Options()
+then
+	q.setQuestion("Do you need a good cleaning?");
+	a.setAnswer("");
+	update(q);
+	update(a);
+	update(o);
+end
+
+rule "Are you still living with your parents - Yes"
+when
+	a:Answer(answer == "Yes")
+	q:Question(question == "Are you still living with your parents?")
+	o:Options()
+then
+	q.setQuestion("You should eat one: 1. CrispCrust 2. TombStone 3. Tony's Original 4. Celeste");
+	a.setAnswer("");
+	update(q);
+	update(a);
+	modify(o){setOptions(new Object[]{"Koniec"})};
+update(o);
+end
+
+rule "Are you still living with your parents - No"
+when
+	a:Answer(answer == "No")
+	q:Question(question == "Are you still living with your parents?")
+	o:Options()
+then
+	q.setQuestion("Are you trying to impress?");
+	a.setAnswer("");
+	update(q);
+	update(a);
+	update(o);
+end
+
+rule "Are you trying to impress - Yes"
+when
+	a:Answer(answer == "Yes")
+	q:Question(question == "Are you trying to impress?")
+	o:Options()
+then
+	q.setQuestion("You should eat one: 1. California Crispy Thin Crust 2. Kashi Five Cheese Tomato Pizza");
+	a.setAnswer("");
+	update(q);
+	update(a);
+	modify(o){setOptions(new Object[]{"Koniec"})};
+update(o);
+end
+
+rule "Are you trying to impress - No"
+when
+	a:Answer(answer == "No")
+	q:Question(question == "Are you trying to impress?")
+	o:Options()
+then
+	q.setQuestion("You should eat one: 1. DiGiorno For One 2. RedBaron StoneHearth 3. Freschetta Naturally rising");
+	a.setAnswer("");
+	update(q);
+	update(a);
+	modify(o){setOptions(new Object[]{"Koniec"})};
+update(o);
+end
+
+rule "Do you need a good cleaning - Yes"
+when
+	a:Answer(answer == "Yes")
+	q:Question(question == "Do you need a good cleaning?")
+	o:Options()
+then
+	q.setQuestion("You should eat one: 1. Banquet Beef Pot Pie 2. Swanson classics 3. Banquet");
+	a.setAnswer("");
+	update(q);
+	update(a);
+	modify(o){setOptions(new Object[]{"Koniec"})};
+update(o);
+end
+
+rule "Do you need a good cleaning - No"
+when
+	a:Answer(answer == "No")
+	q:Question(question == "Do you need a good cleaning?")
+	o:Options()
+then
+	q.setQuestion("Are you Doctor Who?");
+	a.setAnswer("");
+	update(q);
+	update(a);
+	update(o);
+end
+
+rule "Are you Doctor Who - Yes"
+when
+	a:Answer(answer == "Yes")
+	q:Question(question == "Are you Doctor Who?")
+	o:Options()
+then
+	q.setQuestion("You should eat one: 1. Ben and Jerry Ice Cream");
+	a.setAnswer("");
+	update(q);
+	update(a);
+	modify(o){setOptions(new Object[]{"Koniec"})};
+update(o);
+end
+
+rule "Are you Doctor Who - No"
+when
+	a:Answer(answer == "No")
+	q:Question(question == "Are you Doctor Who?")
+	o:Options()
+then
+	q.setQuestion("Are you thirsty?");
+	a.setAnswer("");
+	update(q);
+	update(a);
+	update(o);
+end
+
+rule "Are you thirsty - Yes"
+when
+	a:Answer(answer == "Yes")
+	q:Question(question == "Are you thirsty?")
+	o:Options()
+then
+	q.setQuestion("You should eat one: 1. Minute Maid");
+	a.setAnswer("");
+	update(q);
+	update(a);
+	modify(o){setOptions(new Object[]{"Koniec"})};
+update(o);
+end
+
+rule "Are you thirsty - No"
+when
+	a:Answer(answer == "No")
+	q:Question(question == "Are you thirsty?")
+	o:Options()
+then
+	q.setQuestion("Do you want breakfast?");
+	a.setAnswer("");
+	update(q);
+	update(a);
+	update(o);
+end
+
+rule "Do you want breakfast - Yes"
+when
+	a:Answer(answer == "Yes")
+	q:Question(question == "Do you want breakfast?")
+	o:Options()
+then
+	q.setQuestion("Is it summer 2010?");
+	a.setAnswer("");
+	update(q);
+	update(a);
+	update(o);
+end
+
+rule "Do you want breakfast - No"
+when
+	a:Answer(answer == "No")
+	q:Question(question == "Do you want breakfast?")
+	o:Options()
+then
+	q.setQuestion("Are you Jewish?");
+	a.setAnswer("");
+	update(q);
+	update(a);
+	update(o);
+end
+
+rule "Is it summer 2010 - Yes"
+when
+	a:Answer(answer == "Yes")
+	q:Question(question == "Is it summer 2010?")
+	o:Options()
+then
+	q.setQuestion("Are you Elaine Benes?");
+	a.setAnswer("");
+	update(q);
+	update(a);
+	update(o);
+end
+
+rule "Is it summer 2010 - No"
+when
+	a:Answer(answer == "No")
+	q:Question(question == "Is it summer 2010?")
+	o:Options()
+then
+	q.setQuestion("You should eat one: 1. Bob Evans Brunch Bowls 2. Toaster Bagel Shopps 3. Crossaint 4. ToasterStrudel");
+	a.setAnswer("");
+	update(q);
+	update(a);
+	modify(o){setOptions(new Object[]{"Koniec"})};
+update(o);
+end
+
+rule "Are you Elaine Benes - Yes"
+when
+	a:Answer(answer == "Yes")
+	q:Question(question == "Are you Elaine Benes?")
+	o:Options()
+then
+	q.setQuestion("You should eat one: 1. Muffin Tops");
+	a.setAnswer("");
+	update(q);
+	update(a);
+	modify(o){setOptions(new Object[]{"Koniec"})};
+update(o);
+end
+
+rule "Are you Elaine Benes - No"
+when
+	a:Answer(answer == "No")
+	q:Question(question == "Are you Elaine Benes?")
+	o:Options()
+then
+	q.setQuestion("You should eat one: 1. Eggo homestyle 2. Toaster Sticks");
+	a.setAnswer("");
+	update(q);
+	update(a);
+	modify(o){setOptions(new Object[]{"Koniec"})};
+update(o);
+end
+
+rule "Are you Jewish - Yes"
+when
+	a:Answer(answer == "Yes")
+	q:Question(question == "Are you Jewish?")
+	o:Options()
+then
+	q.setQuestion("You should eat one: 1. Gabila's");
+	a.setAnswer("");
+	update(q);
+	update(a);
+	modify(o){setOptions(new Object[]{"Koniec"})};
+update(o);
+end
+
+rule "Are you Jewish - No"
+when
+	a:Answer(answer == "No")
+	q:Question(question == "Are you Jewish?")
+	o:Options()
+then
+	q.setQuestion("Are you playing WoW?");
+	a.setAnswer("");
+	update(q);
+	update(a);
+	update(o);
+end
+
+rule "Are you playing WoW - Yes"
+when
+	a:Answer(answer == "Yes")
+	q:Question(question == "Are you playing WoW?")
+	o:Options()
+then
+	q.setQuestion("You should eat one: 1. HungryMan Gamer Grub");
+	a.setAnswer("");
+	update(q);
+	update(a);
+	modify(o){setOptions(new Object[]{"Koniec"})};
+update(o);
+end
+
+rule "Are you playing WoW - No"
+when
+	a:Answer(answer == "No")
+	q:Question(question == "Are you playing WoW?")
+	o:Options()
+then
+	q.setQuestion("Are you using a Foreman?");
+	a.setAnswer("");
+	update(q);
+	update(a);
+	update(o);
+end
+
+rule "Are you using a Foreman - Yes"
+when
+	a:Answer(answer == "Yes")
+	q:Question(question == "Are you using a Foreman?")
+	o:Options()
+then
+	q.setQuestion("You should eat one: 1. Tyson Boneless Chicken Breast Portions");
+	a.setAnswer("");
+	update(q);
+	update(a);
+	modify(o){setOptions(new Object[]{"Koniec"})};
+update(o);
+end
+
+rule "Are you using a Foreman - No"
+when
+	a:Answer(answer == "No")
+	q:Question(question == "Are you using a Foreman?")
+	o:Options()
+then
+	q.setQuestion("Do you want dessert?");
+	a.setAnswer("");
+	update(q);
+	update(a);
+	update(o);
+end
+
+rule "Do you want dessert - Yes"
+when
+	a:Answer(answer == "Yes")
+	q:Question(question == "Do you want dessert?")
+	o:Options()
+then
+	q.setQuestion("Are you trying to relive childhood?");
+	a.setAnswer("");
+	update(q);
+	update(a);
+	update(o);
+end
+
+rule "Do you want dessert - No"
+when
+	a:Answer(answer == "No")
+	q:Question(question == "Do you want dessert?")
+	o:Options()
+then
+	q.setQuestion("Did you just get home from school?");
+	a.setAnswer("");
+	update(q);
+	update(a);
+	update(o);
+end
+
+rule "Are you trying to relive childhood - Yes"
+when
+	a:Answer(answer == "Yes")
+	q:Question(question == "Are you trying to relive childhood?")
+	o:Options()
+then
+	q.setQuestion("You should eat one: 1. Popsickle Orange Cherry Grape 2. Otter Pops 3. GoodHumor Strawberry Shortcake");
+	a.setAnswer("");
+	update(q);
+	update(a);
+	modify(o){setOptions(new Object[]{"Koniec"})};
+update(o);
+end
+
+rule "Are you trying to relive childhood - No"
+when
+	a:Answer(answer == "No")
+	q:Question(question == "Are you trying to relive childhood?")
+	o:Options()
+then
+	q.setQuestion("Do you want pie (or are you Jim Levenstein)?");
+	a.setAnswer("");
+	update(q);
+	update(a);
+	update(o);
+end
+
+rule "Do you want pie (or are you Jim Levenstein) - Yes"
+when
+	a:Answer(answer == "Yes")
+	q:Question(question == "Do you want pie (or are you Jim Levenstein)?")
+	o:Options()
+then
+	q.setQuestion("You should eat one: 1. Mrs Smiths 2. Edwards oreo 3. SaraLee 4. MarieCallenders Lattice Apple Pie");
+	a.setAnswer("");
+	update(q);
+	update(a);
+	modify(o){setOptions(new Object[]{"Koniec"})};
+update(o);
+end
+
+rule "Do you want pie (or are you Jim Levenstein) - No"
+when
+	a:Answer(answer == "No")
+	q:Question(question == "Do you want pie (or are you Jim Levenstein)?")
+	o:Options()
+then
+	q.setQuestion("Do you want ice cream?");
+	a.setAnswer("");
+	update(q);
+	update(a);
+	update(o);
+end
+
+rule "Do you want ice cream - Yes"
+when
+	a:Answer(answer == "Yes")
+	q:Question(question == "Do you want ice cream?")
+	o:Options()
+then
+	q.setQuestion("Are you lactose intolerant?");
+	a.setAnswer("");
+	update(q);
+	update(a);
+	update(o);
+end
+
+rule "Do you want ice cream - No"
+when
+	a:Answer(answer == "No")
+	q:Question(question == "Do you want ice cream?")
+	o:Options()
+then
+	q.setQuestion("You should eat one: 1. Puff Pastry Turnovers 2. SaraLee classics 3. Chocolate Fudge 4. Coolwhip");
+	a.setAnswer("");
+	update(q);
+	update(a);
+	modify(o){setOptions(new Object[]{"Koniec"})};
+update(o);
+end
+
+rule "Are you lactose intolerant - Yes"
+when
+	a:Answer(answer == "Yes")
+	q:Question(question == "Are you lactose intolerant?")
+	o:Options()
+then
+	q.setQuestion("You should eat one: 1. SO Delicious diary free");
+	a.setAnswer("");
+	update(q);
+	update(a);
+	modify(o){setOptions(new Object[]{"Koniec"})};
+update(o);
+end
+
+rule "Are you lactose intolerant - No"
+when
+	a:Answer(answer == "No")
+	q:Question(question == "Are you lactose intolerant?")
+	o:Options()
+then
+	q.setQuestion("Do you have a spoon?");
+	a.setAnswer("");
+	update(q);
+	update(a);
+	update(o);
+end
+
+rule "Do you have a spoon - Yes"
+when
+	a:Answer(answer == "Yes")
+	q:Question(question == "Do you have a spoon?")
+	o:Options()
+then
+	q.setQuestion("You should eat one: 1. Ben and Jerry's ice cream 2. Five vanilla bean ice cream 3. Edy's SlowChurned 4. Reese's 5. Blue Bell Ice Cream 6. TurkeyHill Chocolate Peanut Butter Cup");
+	a.setAnswer("");
+	update(q);
+	update(a);
+	modify(o){setOptions(new Object[]{"Koniec"})};
+update(o);
+end
+
+rule "Do you have a spoon - No"
+when
+	a:Answer(answer == "No")
+	q:Question(question == "Do you have a spoon?")
+	o:Options()
+then
+	q.setQuestion("You should eat one: 1. Klondike the original 2. TouHouse chocolate chip cookie sandwitch 3. Nestle Drumstick 4. FatBoy Cookies Cream");
+	a.setAnswer("");
+	update(q);
+	update(a);
+	modify(o){setOptions(new Object[]{"Koniec"})};
+update(o);
+end
+
+rule "Did you just get home from school - Yes"
+when
+	a:Answer(answer == "Yes")
+	q:Question(question == "Did you just get home from school?")
+	o:Options()
+then
+	q.setQuestion("You should eat one: 1. KidCuisine 2. Stouffer's French Bread Pizza 3. SuperPretzel");
+	a.setAnswer("");
+	update(q);
+	update(a);
+	modify(o){setOptions(new Object[]{"Koniec"})};
+update(o);
+end
+
+rule "Did you just get home from school - No"
+when
+	a:Answer(answer == "No")
+	q:Question(question == "Did you just get home from school?")
+	o:Options()
+then
+	q.setQuestion("Are you hight and/or drunk?");
+	a.setAnswer("");
+	update(q);
+	update(a);
+	update(o);
+end
+
+rule "Are you hight and/or drunk - Yes"
+when
+	a:Answer(answer == "Yes")
+	q:Question(question == "Are you hight and/or drunk?")
+	o:Options()
+then
+	q.setQuestion("You should eat one: 1. WhiteCastle 2. Totino's pizza rolls 3. Bagel Bites 4. Gortons 30 crunchy breaded fish sticks 5. Tyson anytizers 6. Hot Pockets 7. Kraft Bagelfuls 8. CornDogs 9. Fridays Potato Skuns 10. Jimmy Dean Pancakes and Sausage");
+	a.setAnswer("");
+	update(q);
+	update(a);
+	modify(o){setOptions(new Object[]{"Koniec"})};
+update(o);
+end
+
+rule "Are you hight and/or drunk - No"
+when
+	a:Answer(answer == "No")
+	q:Question(question == "Are you hight and/or drunk?")
+	o:Options()
+then
+	q.setQuestion("Do you want ethnic food?");
+	a.setAnswer("");
+	update(q);
+	update(a);
+	update(o);
+end
+
+rule "Do you want ethnic food - Yes"
+when
+	a:Answer(answer == "Yes")
+	q:Question(question == "Do you want ethnic food?")
+	o:Options()
+then
+	q.setQuestion("You should eat one: 1. TaiFei 2. LingLing potstickers 3. ClaimJumper spaghetti and meatballs 4. Don Miguel Tacos");
+	a.setAnswer("");
+	update(q);
+	update(a);
+	modify(o){setOptions(new Object[]{"Koniec"})};
+update(o);
+end
+
+rule "Do you want ethnic food - No"
+when
+	a:Answer(answer == "No")
+	q:Question(question == "Do you want ethnic food?")
+	o:Options()
+then
+	q.setQuestion("Do you like chain restaurants?");
+	a.setAnswer("");
+	update(q);
+	update(a);
+	update(o);
+end
+
+rule "Do you like chain restaurants - Yes"
+when
+	a:Answer(answer == "Yes")
+	q:Question(question == "Do you like chain restaurants?")
+	o:Options()
+then
+	q.setQuestion("You should eat one: 1. Claim Jumper Spaghetti and Meatballs 2. Marie Callender's roasted turkey 3. Turkey in a cranberry 4. Stouffer's macaroni and beef");
+	a.setAnswer("");
+	update(q);
+	update(a);
+	modify(o){setOptions(new Object[]{"Koniec"})};
+update(o);
+end
+
+rule "Do you like chain restaurants - No"
+when
+	a:Answer(answer == "No")
+	q:Question(question == "Do you like chain restaurants?")
+	o:Options()
+then
+	q.setQuestion("Do you know how to pre-heat an oven?");
+	a.setAnswer("");
+	update(q);
+	update(a);
+	update(o);
+end
+
+rule "Do you know how to pre-heat an oven - Yes"
+when
+	a:Answer(answer == "Yes")
+	q:Question(question == "Do you know how to pre-heat an oven?")
+	o:Options()
+then
+	q.setQuestion("You should eat one: 1. Orelda Steak Fries 2. Poppers cream cheese jalapenhos 3. Orelda Tater Tots 4. Michael Angelo's");
+	a.setAnswer("");
+	update(q);
+	update(a);
+	modify(o){setOptions(new Object[]{"Koniec"})};
+update(o);
+end
+
+rule "Do you know how to pre-heat an oven - No"
+when
+	a:Answer(answer == "No")
+	q:Question(question == "Do you know how to pre-heat an oven?")
+	o:Options()
+then
+	q.setQuestion("You should eat one: 1. Smucker's Uncrostables");
+	a.setAnswer("");
+	update(q);
+	update(a);
+	modify(o){setOptions(new Object[]{"Koniec"})};
+update(o);
+end
